@@ -43,7 +43,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.koin.android)
-    implementation(libs.glide)
+    implementation(libs.coil.compose)
     ksp(libs.moshi.kotlin.codegen)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.runtime)

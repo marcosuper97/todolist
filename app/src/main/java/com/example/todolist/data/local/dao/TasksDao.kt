@@ -1,7 +1,6 @@
 package com.example.todolist.data.local.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -15,14 +14,14 @@ interface TasksDao {
     fun getAllTasks(): Flow<List<TaskEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTask(note: TaskEntity)
+    suspend fun insertTask(task: TaskEntity)
 
     @Update
-    suspend fun updateTask(note: TaskEntity)
+    suspend fun updateTask(task: TaskEntity)
 
-    @Delete
-    suspend fun deleteTask(task: TaskEntity)
+    @Query("DELETE FROM tasks WHERE id = :id")
+    suspend fun deleteTask(id: Long)
 
     @Query("SELECT * FROM tasks WHERE id = :id")
-    suspend fun getTaskById(id: Long): TaskEntity?
+    suspend fun getTaskById(id: Long): TaskEntity
 }
