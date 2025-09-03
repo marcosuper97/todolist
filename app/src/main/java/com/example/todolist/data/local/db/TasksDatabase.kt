@@ -10,6 +10,6 @@ import com.example.todolist.data.local.entity.TaskEntity
     version = 1,
     entities = [TaskEntity::class]
 )
-abstract class TasksDatabase(): RoomDatabase() {
+abstract class TasksDatabase() : RoomDatabase() {
     abstract fun tasksDao(): TasksDao
 }

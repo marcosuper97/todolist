@@ -8,7 +8,7 @@ data class TaskEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val title: String,
-    val description: String? = null,
+    val description: String = "Описание отсутствует",
     val completed: Boolean = false,
     val imagePath: String? = null,
 )
