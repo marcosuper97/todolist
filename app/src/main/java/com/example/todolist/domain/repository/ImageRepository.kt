@@ -1,6 +1,6 @@
 package com.example.todolist.domain.repository
 
 interface ImageRepository {
-    suspend fun loadToStorage(imagePath: String): String
-    suspend fun deleteFromStorage(fileName: String)
+    suspend fun loadToStorage(imagePath: String): Result<String>
+    suspend fun deleteFromStorage(fileUri: String): Result<Unit>
 }
