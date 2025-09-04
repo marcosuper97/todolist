@@ -2,6 +2,7 @@ package com.example.todolist.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.Date
 
 @Entity(tableName = "tasks")
 data class TaskEntity(
@@ -11,4 +12,5 @@ data class TaskEntity(
     val description: String = "Описание отсутствует",
     val completed: Boolean = false,
     val imagePath: String? = null,
+    val dueDate: Date?
 )

@@ -9,7 +9,8 @@ fun TaskEntity.toModel(): Task {
         title = this.title,
         description = this.description,
         completed = this.completed,
-        imagePath = this.imagePath
+        imagePath = this.imagePath,
+        dueDate = this.dueDate
     )
 }
 
@@ -19,6 +20,7 @@ fun Task.toEntity(): TaskEntity {
         title = this.title,
         description = this.description,
         completed = this.completed,
-        imagePath = this.imagePath
+        imagePath = this.imagePath,
+        dueDate = this.dueDate
     )
 }
