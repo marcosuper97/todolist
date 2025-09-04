@@ -20,39 +20,35 @@ class ImageRepositoryImpl(
 ) : ImageRepository {
     override suspend fun loadToStorage(imageUri: String): Result<String> =
         withContext(Dispatchers.IO) {
-            try {
+            runCatching {
                 val fileName = "${UUID.randomUUID()}.jpg"
                 val file = File(picturesDir, fileName)
 
                 contentResolver.openInputStream(imageUri.toUri())?.use { inputStream ->
                     val bitmap = BitmapFactory.decodeStream(inputStream)
-                        ?: return@withContext Result.failure(IllegalStateException("Failed to decode image"))
+                        ?: throw IllegalStateException("Failed to decode image")
                     FileOutputStream(file).use { outputStream ->
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 60, outputStream)
                     }
-                } ?: return@withContext Result.failure(IOException("Failed to open image stream"))
+                } ?: throw IOException("Failed to open image stream")
 
-                Result.success(Uri.fromFile(file).toString())
-            } catch (e: Exception) {
-                Result.failure(e)
+                Uri.fromFile(file).toString()
             }
         }
 
     override suspend fun deleteFromStorage(imageUri: String): Result<Unit> =
         withContext(Dispatchers.IO) {
-            try {
+            runCatching {
                 val cleanPath = imageUri.removePrefix("file://")
                 val file = File(cleanPath)
-                if (!file.exists()) {
-                    return@withContext Result.success(Unit)
+
+                if (!file.exists()) return@runCatching Unit
+
+                if (!file.delete()) {
+                    throw IOException("Failed to delete file: $imageUri")
                 }
-                if (file.delete()) {
-                    Result.success(Unit)
-                } else {
-                    Result.failure(IOException("Failed to delete file: $imageUri"))
-                }
-            } catch (e: Exception) {
-                Result.failure(e)
+
+                Unit
             }
         }
 }
