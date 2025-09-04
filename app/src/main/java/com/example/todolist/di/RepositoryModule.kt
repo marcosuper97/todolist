@@ -11,7 +11,7 @@ val repositoryModule = module {
         ImageRepositoryImpl(get(), get())
     }
 
-    single <TasksRepository>{
+    single<TasksRepository> {
         TasksRepositoryImpl(get())
     }
 }

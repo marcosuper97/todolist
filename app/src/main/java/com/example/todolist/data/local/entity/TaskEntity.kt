@@ -1,5 +1,6 @@
 package com.example.todolist.data.local.entity
 
+import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
@@ -11,6 +12,6 @@ data class TaskEntity(
     val title: String,
     val description: String = "Описание отсутствует",
     val completed: Boolean = false,
-    val imagePath: String? = null,
+    val imagePath: Uri? = null,
     val dueDate: Date?
 )

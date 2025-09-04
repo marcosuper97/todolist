@@ -13,43 +13,46 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.util.UUID
 
+
 class ImageRepositoryImpl(
     private val contentResolver: ContentResolver,
     private val picturesDir: File
-): ImageRepository {
-    override suspend fun loadToStorage(imagePath: String): Result<String> = withContext(Dispatchers.IO) {
-        try {
-            val fileName = "${UUID.randomUUID()}.jpg"
-            val file = File(picturesDir, fileName)
+) : ImageRepository {
+    override suspend fun loadToStorage(imageUri: String): Result<String> =
+        withContext(Dispatchers.IO) {
+            try {
+                val fileName = "${UUID.randomUUID()}.jpg"
+                val file = File(picturesDir, fileName)
 
-            contentResolver.openInputStream(imagePath.toUri())?.use { inputStream ->
-                val bitmap = BitmapFactory.decodeStream(inputStream)
-                    ?: return@withContext Result.failure(IllegalStateException("Failed to decode image"))
-                FileOutputStream(file).use { outputStream ->
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 60, outputStream)
+                contentResolver.openInputStream(imageUri.toUri())?.use { inputStream ->
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+                        ?: return@withContext Result.failure(IllegalStateException("Failed to decode image"))
+                    FileOutputStream(file).use { outputStream ->
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 60, outputStream)
+                    }
+                } ?: return@withContext Result.failure(IOException("Failed to open image stream"))
+
+                Result.success(Uri.fromFile(file).toString())
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+
+    override suspend fun deleteFromStorage(imageUri: String): Result<Unit> =
+        withContext(Dispatchers.IO) {
+            try {
+                val cleanPath = imageUri.removePrefix("file://")
+                val file = File(cleanPath)
+                if (!file.exists()) {
+                    return@withContext Result.success(Unit)
                 }
-            } ?: return@withContext Result.failure(IOException("Failed to open image stream"))
-
-            Result.success(Uri.fromFile(file).toString())
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    override suspend fun deleteFromStorage(fileUri: String) : Result<Unit> = withContext(Dispatchers.IO) {
-        try {
-            val cleanPath = fileUri.removePrefix("file://")
-            val file = File(cleanPath)
-            if (!file.exists()) {
-                return@withContext Result.success(Unit)
+                if (file.delete()) {
+                    Result.success(Unit)
+                } else {
+                    Result.failure(IOException("Failed to delete file: $imageUri"))
+                }
+            } catch (e: Exception) {
+                Result.failure(e)
             }
-            if (file.delete()) {
-                Result.success(Unit)
-            } else {
-                Result.failure(IOException("Failed to delete file: $fileUri"))
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
         }
-    }
 }
