@@ -5,6 +5,7 @@ import com.example.todolist.domain.interactor.TasksScreenInteractor
 import com.example.todolist.domain.model.Task
 import com.example.todolist.domain.repository.ImageRepository
 import com.example.todolist.domain.repository.TasksRepository
+import kotlinx.coroutines.flow.Flow
 import java.io.IOException
 
 class TaskScreenInteractorImpl(
@@ -56,6 +57,14 @@ class TaskScreenInteractorImpl(
 
         tasksRepository.updateTask(updatedTask)
     }
+
+    override suspend fun updateTaskState(id: Long) {
+        val oldStateTask = tasksRepository.getTask(id)
+        val newStateTask = oldStateTask.copy(completed = !oldStateTask.completed)
+        tasksRepository.updateTask(newStateTask)
+    }
+
+    override suspend fun fetchAllTasks(): Flow<List<Task>> = tasksRepository.getAllTasks()
 
     override suspend fun deleteTask(task: Task): Result<Unit> {
         val imageResult = task.imagePath?.let { deleteImage(it.toString()) }
