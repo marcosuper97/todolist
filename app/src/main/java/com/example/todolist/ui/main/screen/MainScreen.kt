@@ -7,8 +7,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -18,7 +16,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -30,6 +27,7 @@ import com.example.todolist.presentation.main.state.MainScreenState
 import com.example.todolist.presentation.main.vm.MainScreenViewModel
 import com.example.todolist.ui.main.components.CardTask
 import com.example.todolist.ui.main.components.ErrorPlaceholder
+import com.example.todolist.ui.main.components.Fab
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -41,7 +39,6 @@ fun MainScreen(
 ) {
     val scope = rememberCoroutineScope()
     val state by viewModel.taskState.collectAsStateWithLifecycle()
-
     val onEditClick: (taskId: Long) -> Unit = { taskId ->
         scope.launch {
             navController.navigate("taskEditScreen/$taskId")
@@ -66,6 +63,13 @@ fun MainScreen(
             viewModel.eventProcessor(MainScreenIntent.ReupdateTasks)
         }
     }
+    val onFabClick: () -> Unit = {
+        {
+            scope.launch {
+                navController.navigate("taskEditScreen")
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -79,20 +83,7 @@ fun MainScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    scope.launch {
-                        navController.navigate("taskEditScreen")
-                    }
-                },
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.add_task_icon),
-                    contentDescription = stringResource(R.string.add_task)
-                )
-            }
+            Fab(onFabClick)
         },
         content = { innerPadding ->
             Box(
