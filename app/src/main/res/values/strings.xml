@@ -6,4 +6,8 @@
     <string name="try_again">Повторить загрузку</string>
     <string name="unknown_error">При загрузке списка задач произошла неизвестная ошибка.</string>
     <string name="empty_content">Вы пока не завели ни одной задачи.\nСамое время попробовать :)</string>
+    <string name="add_image">Добавить изображение</string>
+    <string name="press_to_add_image">Нажмите, чтобы добавить изображение</string>
+    <string name="brows">Обзор</string>
+    <string name="choosed_image">Выбранное изображение</string>
 </resources>
