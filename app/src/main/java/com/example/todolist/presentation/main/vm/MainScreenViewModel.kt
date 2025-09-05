@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class MainScreenViewModel(
     private val tasksScreenInteractor: TasksScreenInteractor
 ) : ViewModel() {
-    var _taskState = MutableStateFlow<MainScreenState>(MainScreenState.LoadingTasks)
+    private var _taskState = MutableStateFlow<MainScreenState>(MainScreenState.LoadingTasks)
     val taskState: StateFlow<MainScreenState> get() = _taskState
 
     init {

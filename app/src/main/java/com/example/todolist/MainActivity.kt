@@ -44,7 +44,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         dueDate = Date() // Текущая дата (сегодняшняя дата, установленная автоматически)
     )
 
-    CardTask(mockTask,modifier)
+    CardTask(mockTask,{},{},{})
 }
 
 @Preview(showBackground = true)

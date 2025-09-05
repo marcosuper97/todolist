@@ -3,4 +3,7 @@
     <string name="edit">Редактировать</string>
     <string name="delete">Удалить</string>
     <string name="add_task">Добавить задачу</string>
+    <string name="try_again">Повторить загрузку</string>
+    <string name="unknown_error">При загрузке списка задач произошла неизвестная ошибка.</string>
+    <string name="empty_content">Вы пока не завели ни одной задачи.\nСамое время попробовать :)</string>
 </resources>

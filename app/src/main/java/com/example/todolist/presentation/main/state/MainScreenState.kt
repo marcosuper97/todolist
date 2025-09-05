@@ -6,5 +6,5 @@ sealed class MainScreenState {
     object EmptyTask : MainScreenState()
     object Error : MainScreenState()
     object LoadingTasks : MainScreenState()
-    class ShowContent(taskList: List<Task>) : MainScreenState()
+    data class ShowContent(val taskList: List<Task>) : MainScreenState()
 }
