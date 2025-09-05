@@ -7,11 +7,12 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
@@ -23,7 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,26 +34,27 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.example.todolist.R
 import com.example.todolist.domain.model.Task
-import com.example.todolist.ui.theme.TodolistTheme
-import java.util.Date
 
 @Composable
 fun CardTask(
     task: Task,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
-    onCheckboxClick: () -> Unit
+    onCheckboxClick: () -> Unit,
 ) {
-    var expanded by remember { mutableStateOf(false) }
+    var expanded by rememberSaveable { mutableStateOf(false) }
 
-    OutlinedCard {
+    OutlinedCard(
+        modifier = Modifier
+            .padding(horizontal = 12.dp, vertical = 4.dp)
+            .clickable(onClick = { expanded = !expanded })
+    ) {
         Column(
             modifier = Modifier
                 .padding(16.dp)
@@ -61,7 +63,7 @@ fun CardTask(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(
                     checked = task.completed,
-                    onCheckedChange = { onCheckboxClick },
+                    onCheckedChange = { onCheckboxClick() },
                     modifier = Modifier.padding(end = 16.dp)
                 )
                 Column(modifier = Modifier.weight(1f)) {
@@ -70,7 +72,9 @@ fun CardTask(
                         style = MaterialTheme.typography.titleMedium
                     )
                     Text(
-                        text = task.dueDate.toString(),
+                        text = task.dueDate?.let {
+                            stringResource(R.string.time_for_complete) + " ${task.dueDate}"
+                        } ?: stringResource(R.string.indefinitely),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -80,14 +84,13 @@ fun CardTask(
                 ) {
                     val rotation by animateFloatAsState(
                         targetValue = if (expanded) 180f else 0f,
-                        animationSpec = tween(durationMillis = 300),
-                        label = "iconRotation"
+                        animationSpec = tween(durationMillis = 300)
                     )
                     Icon(
                         painterResource(
                             id = R.drawable.arrow_down
                         ),
-                        contentDescription = "expander icon",
+                        contentDescription = stringResource(R.string.expanded_description),
                         modifier = Modifier.rotate(rotation)
                     )
                 }
@@ -104,7 +107,7 @@ fun CardTask(
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text = task.description,
+                        text = task.description ?: stringResource(R.string.description_not_found),
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
@@ -115,19 +118,16 @@ fun CardTask(
                                 .data(task.imagePath)
                                 .crossfade(true)
                                 .build(),
-                            contentDescription = "Изображение задачи",
+                            contentDescription = stringResource(R.string.inline_image),
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .height(200.dp)
+                                .wrapContentSize()
                                 .clip(RoundedCornerShape(8.dp)),
-                            contentScale = ContentScale.Crop,
-                            placeholder = painterResource(R.drawable.mock_image),
-                            error = painterResource(R.drawable.mock_image)
+                            contentScale = ContentScale.Fit
                         )
                     }
-                    Row() {
+                    Row(modifier = Modifier.padding(top = 8.dp)) {
                         OutlinedButton(
-                            onClick = { onEditClick },
+                            onClick = { onEditClick() },
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(end = 8.dp)
@@ -138,7 +138,7 @@ fun CardTask(
                         }
 
                         OutlinedButton(
-                            onClick = { onDeleteClick },
+                            onClick = { onDeleteClick() },
                             modifier = Modifier.weight(1f)
                         ) {
                             Text(
@@ -149,22 +149,5 @@ fun CardTask(
                 }
             }
         }
-    }
-}
-
-val mockTask = Task(
-    id = 1L,
-    title = "Пример задачи",
-    description = "Символы — удивительные посредники между внутренним миром и внешним пространством. Они позволяют нам выразить глубокие чувства, передать важные идеи и обозначить смыслы, которые трудно описать словами. Каждый символ несет свою уникальную энергию и историю, вызывая ассоциации и эмоции у разных людей. Именно символы помогают людям создавать общие культурные коды, понимать друг друга и чувствовать принадлежность к определенной группе или эпохе. Таким образом, символы становятся мощным инструментом коммуникации и взаимопонимания, делая нашу жизнь богаче и насыщеннее смыслами.",
-    completed = false,
-    imagePath = null,
-    dueDate = Date() // Текущая дата (сегодняшняя дата, установленная автоматически)
-)
-
-@Preview(showBackground = true)
-@Composable
-fun CardTaskPreview() {
-    TodolistTheme {
-        CardTask(mockTask, {}, {}, {})
     }
 }

@@ -2,22 +2,25 @@ package com.example.todolist.ui.main.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.todolist.R
@@ -30,6 +33,7 @@ import com.example.todolist.ui.main.components.ErrorPlaceholder
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
     navController: NavController,
@@ -38,13 +42,9 @@ fun MainScreen(
     val scope = rememberCoroutineScope()
     val state by viewModel.taskState.collectAsStateWithLifecycle()
 
-    /**
-     * Необходимо доработать
-     * @param onEditClick
-     * а также дописать слушатель нажатия для перехода на создание таски
-     */
-    val onEditClick: (id: Long) -> Unit = { id ->
+    val onEditClick: (taskId: Long) -> Unit = { taskId ->
         scope.launch {
+            navController.navigate("taskEditScreen/$taskId")
         }
     }
     val onDeleteClick: (task: Task) -> Unit = { task ->
@@ -69,11 +69,22 @@ fun MainScreen(
 
     Scaffold(
         topBar = {
-            Text(text = stringResource(R.string.app_name))
+            TopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(R.string.app_name),
+                        style = MaterialTheme.typography.displaySmall
+                    )
+                }
+            )
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /* Действие при клике */ },
+                onClick = {
+                    scope.launch {
+                        navController.navigate("taskEditScreen")
+                    }
+                },
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary
             ) {
@@ -90,7 +101,20 @@ fun MainScreen(
                     .fillMaxSize()
             ) {
                 when (state) {
-                    MainScreenState.EmptyTask -> Text(text = stringResource(R.string.empty_content))
+                    MainScreenState.EmptyTask ->
+                        Box(
+                            modifier = Modifier
+                                .padding(innerPadding)
+                                .fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = stringResource(R.string.empty_content),
+                                style = MaterialTheme.typography.titleMedium,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+
                     MainScreenState.Error -> ErrorPlaceholder(onReloadClick)
                     MainScreenState.LoadingTasks -> {
                         CircularProgressIndicator()
@@ -98,10 +122,10 @@ fun MainScreen(
 
                     is MainScreenState.ShowContent -> {
                         val tasksList = (state as MainScreenState.ShowContent).taskList
-                        LazyColumn(
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            items(tasksList) { task ->
+                        LazyColumn {
+                            items(
+                                tasksList,
+                                key = { it.id }) { task ->
                                 CardTask(
                                     task = task,
                                     onEditClick = { onEditClick(task.id) },

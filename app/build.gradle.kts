@@ -45,7 +45,7 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.coil.compose)
     ksp(libs.moshi.kotlin.codegen)
-    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.core.ktx)

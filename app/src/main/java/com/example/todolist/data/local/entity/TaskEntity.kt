@@ -7,9 +7,9 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "tasks")
 data class TaskEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    val id: Long,
     val title: String,
-    val description: String = "Описание отсутствует",
+    val description: String? = null,
     val completed: Boolean = false,
     val imagePath: Uri? = null,
     val dueDate: String?

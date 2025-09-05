@@ -15,6 +15,11 @@
     <string name="close">Закрыть</string>
     <string name="title_task">Заголовок задачи</string>
     <string name="description">Описание</string>
+    <string name="description_not_found">Описание отсутствует.</string>
     <string name="choose_date">Выберите дату</string>
-
+    <string name="date_not_set">Дата не установлена.</string>
+    <string name="time_for_complete">Дата выполнения: </string>
+    <string name="inline_image">Вложенное изображение</string>
+    <string name="expanded_description">Развернуть описание</string>
+    <string name="indefinitely">Бессрочно.</string>
 </resources>

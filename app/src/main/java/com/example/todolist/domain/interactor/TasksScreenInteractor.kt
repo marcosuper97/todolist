@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface TasksScreenInteractor {
     suspend fun fetchAllTasks(): Flow<List<Task>>
+    suspend fun getTask(id: Long): Task
     suspend fun deleteTask(task: Task): Result<Unit>
     suspend fun addNewTask(task: Task): Result<Unit>
     suspend fun updateTask(task: Task): Result<Unit>

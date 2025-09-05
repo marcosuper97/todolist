@@ -66,6 +66,10 @@ class TaskScreenInteractorImpl(
 
     override suspend fun fetchAllTasks(): Flow<List<Task>> = tasksRepository.getAllTasks()
 
+    override suspend fun getTask(id: Long): Task {
+        return tasksRepository.getTask(id)
+    }
+
     override suspend fun deleteTask(task: Task): Result<Unit> {
         val imageResult = task.imagePath?.let { deleteImage(it.toString()) }
 

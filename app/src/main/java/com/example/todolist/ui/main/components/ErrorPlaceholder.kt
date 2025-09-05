@@ -1,8 +1,6 @@
 package com.example.todolist.ui.main.components
 
 import android.content.res.Configuration
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,11 +16,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todolist.R
-import java.nio.file.WatchEvent
 
 @Composable
 fun ErrorPlaceholder(onClick: () -> Unit) {
-    ElevatedCard(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)){
+    ElevatedCard(modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp)) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(22.dp)
@@ -40,10 +39,11 @@ fun ErrorPlaceholder(onClick: () -> Unit) {
     }
 }
 
-@Preview(showBackground = false,
+@Preview(
+    showBackground = false,
     uiMode = Configuration.UI_MODE_NIGHT_NO
 )
 @Composable
-fun ErrorPlaceholderPreview(){
+fun ErrorPlaceholderPreview() {
     ErrorPlaceholder({})
 }
