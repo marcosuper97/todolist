@@ -10,4 +10,11 @@
     <string name="press_to_add_image">Нажмите, чтобы добавить изображение</string>
     <string name="brows">Обзор</string>
     <string name="choosed_image">Выбранное изображение</string>
+    <string name="new_task">Новая задача</string>
+    <string name="save_task">Сохранить задачу</string>
+    <string name="close">Закрыть</string>
+    <string name="title_task">Заголовок задачи</string>
+    <string name="description">Описание</string>
+    <string name="choose_date">Выберите дату</string>
+
 </resources>

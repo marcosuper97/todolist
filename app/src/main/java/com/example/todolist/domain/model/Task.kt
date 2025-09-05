@@ -9,5 +9,5 @@ data class Task(
     val description: String,
     val completed: Boolean,
     val imagePath: Uri?,
-    val dueDate: Date?
+    val dueDate: String?
 )
