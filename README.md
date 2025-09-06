@@ -30,7 +30,7 @@
 ## Установка и Запуск
 ### Вариант 1: Загрузка APK-файла
 Загрузите последнюю версию APK файла из релиза:
-- Скачать: [APK](https://github.com/marcosuper97/todolist/releases/tag/v.1.0.0)
+- Скачать: [APK](https://github.com/marcosuper97/todolist/releases/tag/v1.0.1)
 
 ### Вариант 2: Сборка из исходников
 1. Скопируйте репозиторий:
