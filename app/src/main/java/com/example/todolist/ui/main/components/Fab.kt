@@ -7,10 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.todolist.R
-import kotlinx.coroutines.launch
 
 @Composable
-fun Fab(onClick: () -> Unit){
+fun Fab(onClick: () -> Unit) {
     FloatingActionButton(
         onClick = {
             onClick()

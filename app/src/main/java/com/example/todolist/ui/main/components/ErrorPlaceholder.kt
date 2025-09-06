@@ -19,9 +19,11 @@ import com.example.todolist.R
 
 @Composable
 fun ErrorPlaceholder(onClick: () -> Unit) {
-    ElevatedCard(modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 16.dp)) {
+    ElevatedCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+    ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(22.dp)
@@ -32,8 +34,8 @@ fun ErrorPlaceholder(onClick: () -> Unit) {
                 text = stringResource(R.string.unknown_error),
                 modifier = Modifier.padding(bottom = 12.dp)
             )
-            OutlinedButton(onClick = { onClick }) {
-                Text(text = stringResource(R.string.try_again))
+            OutlinedButton(onClick = { onClick() }) {
+                Text(text = stringResource(R.string.open_settings))
             }
         }
     }

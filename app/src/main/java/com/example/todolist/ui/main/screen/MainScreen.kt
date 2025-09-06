@@ -60,14 +60,12 @@ fun MainScreen(
     }
     val onReloadClick: () -> Unit = {
         scope.launch {
-            viewModel.eventProcessor(MainScreenIntent.ReupdateTasks)
+            viewModel.eventProcessor(MainScreenIntent.OpenSettings)
         }
     }
     val onFabClick: () -> Unit = {
-        {
-            scope.launch {
-                navController.navigate("taskEditScreen")
-            }
+        scope.launch {
+            navController.navigate("taskEditScreen")
         }
     }
 
@@ -83,7 +81,9 @@ fun MainScreen(
             )
         },
         floatingActionButton = {
-            Fab(onFabClick)
+            if (state !is MainScreenState.Error) {
+                Fab(onFabClick)
+            }
         },
         content = { innerPadding ->
             Box(
@@ -94,9 +94,7 @@ fun MainScreen(
                 when (state) {
                     MainScreenState.EmptyTask ->
                         Box(
-                            modifier = Modifier
-                                .padding(innerPadding)
-                                .fillMaxSize(),
+                            modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
@@ -106,9 +104,21 @@ fun MainScreen(
                             )
                         }
 
-                    MainScreenState.Error -> ErrorPlaceholder(onReloadClick)
+                    MainScreenState.Error ->
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            ErrorPlaceholder(onReloadClick)
+                        }
+
                     MainScreenState.LoadingTasks -> {
-                        CircularProgressIndicator()
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
                     }
 
                     is MainScreenState.ShowContent -> {

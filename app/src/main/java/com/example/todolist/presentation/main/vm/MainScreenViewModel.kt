@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todolist.domain.interactor.TasksScreenInteractor
 import com.example.todolist.domain.model.Task
+import com.example.todolist.domain.repository.SystemNavigatorRepository
 import com.example.todolist.presentation.main.intent.MainScreenIntent
 import com.example.todolist.presentation.main.state.MainScreenState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +13,8 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 class MainScreenViewModel(
-    private val tasksScreenInteractor: TasksScreenInteractor
+    private val tasksScreenInteractor: TasksScreenInteractor,
+    private val systemNavigatorRepository: SystemNavigatorRepository
 ) : ViewModel() {
     private var _taskState = MutableStateFlow<MainScreenState>(MainScreenState.LoadingTasks)
     val taskState: StateFlow<MainScreenState> get() = _taskState
@@ -24,7 +26,7 @@ class MainScreenViewModel(
     fun eventProcessor(intent: MainScreenIntent) {
         when (intent) {
             is MainScreenIntent.ClickOnDelete -> deleteTask(intent.task)
-            MainScreenIntent.ReupdateTasks -> getData()
+            MainScreenIntent.OpenSettings -> openSettings()
             is MainScreenIntent.ClickOnComplete -> completeToggle(intent.id)
         }
     }
@@ -52,6 +54,12 @@ class MainScreenViewModel(
     private fun completeToggle(id: Long) {
         viewModelScope.launch {
             tasksScreenInteractor.updateTaskState(id)
+        }
+    }
+
+    private fun openSettings() {
+        viewModelScope.launch {
+            systemNavigatorRepository.openSettings()
         }
     }
 }

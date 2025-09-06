@@ -3,8 +3,8 @@
     <string name="edit">Редактировать</string>
     <string name="delete">Удалить</string>
     <string name="add_task">Добавить задачу</string>
-    <string name="try_again">Повторить загрузку</string>
-    <string name="unknown_error">При загрузке списка задач произошла неизвестная ошибка.</string>
+    <string name="open_settings">Открыть настройки</string>
+    <string name="unknown_error">При загрузке локального списка задач произошла неизвестная ошибка. Пожалуйста, дождитесь обновления или очистите хранилище в натсройках.\nПри очистке хранилища все данные будут утрачены!</string>
     <string name="empty_content">Вы пока не завели ни одной задачи.\nСамое время попробовать :)</string>
     <string name="add_image">Добавить изображение</string>
     <string name="press_to_add_image">Нажмите, чтобы добавить изображение</string>
