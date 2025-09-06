@@ -99,7 +99,7 @@ fun TaskEditScreen(
         bottomBar = {
             EditScreenBottomBar(
                 onClick = onSaveClick,
-                titleSymbolsSize = state.title.length
+                titleSymbolsSize = state.title.trim().length
             )
         }
     ) { innerPadding ->
