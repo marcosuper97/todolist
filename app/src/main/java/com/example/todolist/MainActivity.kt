@@ -4,13 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.todolist.ui.edit_screen.screen.TaskEditScreen
+import com.example.todolist.ui.main.screen.MainScreen
 import com.example.todolist.ui.theme.TodolistTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,29 +18,35 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TodolistTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                AppNavigation()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun AppNavigation() {
+    val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = "mainScreen") {
+        composable("mainScreen") {
+            MainScreen(navController)
+        }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    TodolistTheme {
-        Greeting("Android")
+        composable("taskEditScreen") {
+            TaskEditScreen(
+                taskId = null,
+                navController = navController
+            )
+        }
+
+        composable("taskEditScreen/{taskId}") { backStackEntry ->
+            val taskIdString = backStackEntry.arguments?.getString("taskId")
+            val taskId = taskIdString?.toLongOrNull()
+
+            TaskEditScreen(
+                taskId = taskId,
+                navController = navController
+            )
+        }
     }
 }
