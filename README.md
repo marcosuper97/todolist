@@ -1,4 +1,5 @@
 # TodoList
+<img width="183" height="183" alt="Снимок экрана 2025-09-06 в 04 01 52" src="https://github.com/user-attachments/assets/b1f7645d-4c58-4bdd-a578-f02e29ea3f0e" />
 
 ## Описание
 
@@ -38,10 +39,6 @@
 ## Установка и Запуск
 
 ### Вариант 1: Загрузка APK-файла
-
-Загрузите последнюю версию APK файла из релиза:
-
-- Скачать: [APK](https://github.com/marcosuper97/todolist/releases/tag/v.1.0.0)
 
 ### Вариант 2: Сборка из исходников
 
